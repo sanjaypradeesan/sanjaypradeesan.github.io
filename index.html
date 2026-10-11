@@ -194,12 +194,24 @@ a:hover{color:#E0402F}
       </sc-for>
     </div>
   </div>
+  <button type="button" onclick="{{ openGallery }}" aria-label="Open photo gallery" style="margin-top:56px;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;padding:clamp(22px,3vw,34px);border:0;border-radius:20px;background:#1A1612;color:#FBF6EC;text-align:left;cursor:pointer;font-family:inherit" style-hover="background:#2A241E">
+    <span style="display:flex;flex-direction:column;gap:10px">
+      <span style="font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:#C6F432">Gallery · {{ galTotal }} photos · {{ galSecCount }} sections</span>
+      <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(26px,3.2vw,44px);line-height:1;letter-spacing:-.03em">Moments, certificates &amp; milestones</span>
+    </span>
+    <span style="display:flex;align-items:center;gap:12px">
+      <sc-for list="{{ galPreview }}" as="pv" hint-placeholder-count="4">
+        <img src="{{ pv.src }}" alt="" loading="lazy" style="width:clamp(44px,5vw,64px);height:clamp(44px,5vw,64px);object-fit:cover;border-radius:12px;border:2px solid #FBF6EC">
+      </sc-for>
+      <span style="white-space:nowrap;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:14px 22px;border-radius:999px;background:#FF5A4E;color:#140F22;font-weight:600">View gallery →</span>
+    </span>
+  </button>
 </section>
 
 <section id="contact" data-screen-label="07 Contact" style="position:relative;overflow:hidden;background:#FF5A4E;color:#140F22">
   <div style="padding:120px clamp(18px,6vw,96px) 72px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:40px">
     <div style="display:flex;flex-direction:column;gap:20px;max-width:640px">
-      <h2 data-reveal="" style="margin:0;font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(34px,4.6vw,68px);line-height:1;letter-spacing:-.03em;text-wrap:pretty">Open to opportunities in Placement &amp; HR Operations, Administration &amp; IT Technical Support<span style="color:#FFB627">.</span></h2>
+      <h2 data-reveal="" style="margin:0;font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(34px,4.6vw,68px);line-height:1;letter-spacing:-.03em;text-wrap:pretty">Open to IT support &amp; networking roles<span style="color:#FFB627">.</span></h2>
       <p data-reveal="" style="margin:0;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#2A1420;line-height:1.8">sanjaypradeesan145@gmail.com · +91 95664 36816 · Tiruchirappalli</p>
     </div>
     <div data-reveal="" style="display:flex;flex-wrap:wrap;gap:12px">
@@ -215,10 +227,62 @@ a:hover{color:#E0402F}
   </div>
   <div aria-hidden="true" style="font-family:'Syne',sans-serif;font-weight:800;font-size:5.4vw;line-height:.9;letter-spacing:-.03em;white-space:nowrap;text-align:center;color:#140F22;transform:translateY(22%);margin-top:24px">SANJAY PRADEESAN</div>
 </section>
+
+<sc-if value="{{ galOpen }}" hint-placeholder-val="{{ false }}">
+  <div role="dialog" aria-modal="true" aria-label="Photo gallery" style="position:fixed;inset:0;z-index:100;background:#FBF6EC;overflow-y:auto;overscroll-behavior:contain">
+    <div style="position:sticky;top:0;z-index:2;background:rgba(251,246,236,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(26,22,18,.13);padding:16px clamp(16px,4vw,56px);display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(20px,2.4vw,28px);letter-spacing:-.02em">Gallery<span style="color:#FF5A4E">.</span></div>
+        <button type="button" onclick="{{ closeGallery }}" aria-label="Close gallery" style="flex-shrink:0;font-family:inherit;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:10px 18px;border-radius:999px;border:1px solid rgba(26,22,18,.35);background:transparent;color:#1A1612;cursor:pointer" style-hover="border-color:#E0402F;color:#E0402F">Close ✕</button>
+      </div>
+      <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin">
+        <sc-for list="{{ galTabs }}" as="t" hint-placeholder-count="8">
+          <button type="button" onclick="{{ t.pick }}" aria-pressed="{{ t.on }}" style="flex-shrink:0;white-space:nowrap;font-family:inherit;font-size:12px;padding:8px 14px;border-radius:999px;border:1px solid {{ t.border }};background:{{ t.bg }};color:{{ t.fg }};cursor:pointer;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:{{ t.c }}"></span>{{ t.label }}<span style="opacity:.6">{{ t.n }}</span></button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="padding:32px clamp(16px,4vw,56px) 80px;display:flex;flex-direction:column;gap:56px">
+      <sc-for list="{{ galShown }}" as="s" hint-placeholder-count="2">
+        <section aria-label="{{ s.title }}" style="display:flex;flex-direction:column;gap:20px">
+          <div style="display:flex;flex-direction:column;gap:8px;padding-bottom:14px;border-bottom:1px solid rgba(26,22,18,.13)">
+            <div style="font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:#5A5348;display:flex;gap:12px;align-items:center"><span style="width:28px;height:3px;border-radius:2px;background:{{ s.c }};display:inline-block"></span>{{ s.num }} · {{ s.count }} photos</div>
+            <h3 style="margin:0;font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(24px,3vw,40px);line-height:1.05;letter-spacing:-.02em">{{ s.title }}</h3>
+            <p style="margin:0;font-size:14px;line-height:1.6;color:#5A5348;max-width:640px">{{ s.blurb }}</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:18px">
+            <sc-for list="{{ s.photos }}" as="p" hint-placeholder-count="6">
+              <figure style="margin:0;display:flex;flex-direction:column;gap:10px">
+                <button type="button" onclick="{{ p.open }}" aria-label="View larger: {{ p.cap }}" style="display:block;padding:0;border:0;border-radius:14px;overflow:hidden;background:#F3EBDC;aspect-ratio:4/3;cursor:zoom-in" style-hover="box-shadow:0 0 0 3px #FF5A4E">
+                  <img src="{{ p.src }}" alt="{{ p.cap }}" loading="lazy" style="width:100%;height:100%;object-fit:{{ p.fit }};display:block">
+                </button>
+                <figcaption style="font-size:13px;line-height:1.45;color:#1A1612">{{ p.cap }}</figcaption>
+              </figure>
+            </sc-for>
+          </div>
+        </section>
+      </sc-for>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}">
+  <div role="dialog" aria-modal="true" aria-label="{{ lbCap }}" onclick="{{ closeLb }}" style="position:fixed;inset:0;z-index:110;background:rgba(20,15,34,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:56px clamp(12px,4vw,72px) 24px">
+    <img src="{{ lbSrc }}" alt="{{ lbCap }}" onclick="{{ stop }}" style="max-width:100%;max-height:calc(100vh - 150px);object-fit:contain;border-radius:10px;display:block">
+    <div onclick="{{ stop }}" style="display:flex;align-items:center;gap:16px;max-width:900px;width:100%;justify-content:space-between;color:#FBF6EC">
+      <button type="button" onclick="{{ lbPrev }}" aria-label="Previous photo" style="flex-shrink:0;width:44px;height:44px;border-radius:50%;border:1px solid rgba(251,246,236,.4);background:transparent;color:#FBF6EC;font-size:18px;cursor:pointer" style-hover="background:#FF5A4E;border-color:#FF5A4E;color:#140F22">←</button>
+      <div style="display:flex;flex-direction:column;gap:4px;text-align:center;min-width:0">
+        <span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#FFB627">{{ lbSec }} · {{ lbCounter }}</span>
+        <span style="font-size:14px;line-height:1.45">{{ lbCap }}</span>
+      </div>
+      <button type="button" onclick="{{ lbNext }}" aria-label="Next photo" style="flex-shrink:0;width:44px;height:44px;border-radius:50%;border:1px solid rgba(251,246,236,.4);background:transparent;color:#FBF6EC;font-size:18px;cursor:pointer" style-hover="background:#FF5A4E;border-color:#FF5A4E;color:#140F22">→</button>
+    </div>
+    <button type="button" onclick="{{ closeLb }}" aria-label="Close photo" style="position:absolute;top:14px;right:14px;font-family:inherit;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:10px 18px;border-radius:999px;border:1px solid rgba(251,246,236,.4);background:transparent;color:#FBF6EC;cursor:pointer" style-hover="border-color:#FF5A4E;color:#FF5A4E">Close ✕</button>
+  </div>
+</sc-if>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;titleGrowth&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.2,&quot;min&quot;:0,&quot;max&quot;:0.5,&quot;step&quot;:0.01,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Portal&quot;},&quot;titleSpread&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.45,&quot;min&quot;:0,&quot;max&quot;:0.8,&quot;step&quot;:0.01,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Portal&quot;},&quot;throwThreshold&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.1,&quot;min&quot;:0.05,&quot;max&quot;:0.4,&quot;step&quot;:0.01,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Deck&quot;}}">
 class Component extends DCLogic {
-  state = { top: 0, wide: true };
+  state = { top: 0, wide: true, galOpen: false, galSec: -1, lb: -1 };
   heroRef = React.createRef(); imgRef = React.createRef(); washRef = React.createRef();
   panelL = React.createRef(); panelR = React.createRef(); dotA = React.createRef(); dotB = React.createRef();
   titleRef = React.createRef(); spanA = React.createRef(); spanB = React.createRef();
@@ -226,17 +290,17 @@ class Component extends DCLogic {
   top = 0; drag = null; busy = false;
 
   jobs = [
-    { num: '05', code: 'Current', bg: '#C6F432', dates: 'Present', role: 'Placement Operations & HR Relations', company: 'SRM Institute of Science and Technology', desc: 'End-to-end campus placement: planning recruitment drives, building HR and corporate relationships, guiding students, and owning placement data and reporting.', tags: 'Placements · HR relations ' },
+    { num: '05', code: 'Current', bg: '#C6F432', dates: 'Present', role: 'Placement Operations & HR Relations', company: 'SRM Institute of Science and Technology', desc: 'End-to-end campus placement: planning recruitment drives, building HR and corporate relationships, guiding students, and owning placement data and reporting.', tags: 'Placements · HR relations · MIS' },
     { num: '04', code: 'Full-time', bg: '#FF5A4E', dates: 'From Jun 2025', role: 'Delivery Team Associate', company: 'VDart Technologies Pvt Ltd', desc: 'CEIPAL ATS operations on the Tools Team: compliance and accuracy audits, credit allocation tracking and first-level troubleshooting with cross-functional teams.', tags: 'CEIPAL ATS · Audits · Support' },
     { num: '03', code: 'Internship', bg: '#3FB58A', dates: 'Aug 2024', role: 'Front-End Web Development Intern', company: 'VR Della IT Services', desc: 'Designed responsive pages with HTML, CSS and media queries; refined UI with advanced CSS while keeping cross-browser compatibility.', tags: 'HTML · CSS · Responsive' },
-    { num: '02', code: 'Field', bg: '#FFB627', dates: 'Jul 2023 — Dec 2024', role: 'Jio Fiber Engineer', company: 'Reliance Jio Infocomm Ltd', desc: 'Installed, configured and maintained fibre connections for homes and businesses; diagnosed network faults to mini e downtime and worked with backend teams on service quality.', tags: 'Fibre · Diagnostics · Field service' },
+    { num: '02', code: 'Field', bg: '#FFB627', dates: 'Jul 2023 — Dec 2024', role: 'Jio Fiber Engineer', company: 'Reliance Jio Infocomm Ltd', desc: 'Installed, configured and maintained fibre connections for homes and businesses; diagnosed network faults to minimise downtime and worked with backend teams on service quality.', tags: 'Fibre · Diagnostics · Field service' },
     { num: '01', code: 'Internship', bg: '#F28C28', dates: 'Feb 2022', role: 'Network Engineering Intern', company: 'BSNL Pvt Ltd, Trichy', desc: 'Foundational work in network architecture, IP configuration and troubleshooting.', tags: 'Networking · IP · Troubleshooting' }
   ];
   duties = [
     { num: '01', bg: '#C6F432', title: 'Placement operations & drive management', points: ['Coordinate and monitor end-to-end campus placement activities.', 'Plan, schedule and execute campus recruitment drives.', 'Manage recruitment schedules, student participation and drive logistics.', 'Coordinate with internal teams for smooth execution.'] },
     { num: '02', bg: '#FFB627', title: 'HR connectivity & corporate relations', points: ['Build and maintain relationships with HR representatives and corporate recruiters.', 'Connect with companies to explore campus recruitment opportunities.', 'Facilitate communication between recruiters and the institution.', 'Coordinate interview schedules, requirements and follow-ups with HR teams.'] },
     { num: '03', bg: '#F28C28', title: 'Student coordination & support', points: ['Answer student queries on drives, eligibility, assessments and interviews.', 'Communicate announcements, deadlines, instructions and schedules.', 'Monitor registrations, assessment completion, attendance and participation.', 'Guide students through the recruitment process.'] },
-    { num: '04', bg: '#3FB58A', title: 'Placement data & reporting', points: ['Maintain student databases, placement records, trackers and results.', 'Compile, validate and share placement data with stakeholders.', 'Prepare placement reports,   updates, dashboards and presentations.', 'Track recruitment progress, participation and outcomes.'] },
+    { num: '04', bg: '#3FB58A', title: 'Placement data & reporting', points: ['Maintain student databases, placement records, trackers and results.', 'Compile, validate and share placement data with stakeholders.', 'Prepare placement reports, MIS updates, dashboards and presentations.', 'Track recruitment progress, participation and outcomes.'] },
     { num: '05', bg: '#FF5A4E', title: 'Recruitment logistics & arrangements', points: ['Arrange venues, computer labs, equipment and other requirements.', 'Organise transportation and logistical support.', 'Host visiting recruiters and provide on-campus assistance.', 'Coordinate with faculty, student coordinators and admin teams.'] },
     { num: '06', bg: '#E9C46A', title: 'Technical support & issue resolution', points: ['Resolve technical issues with online assessments and recruitment portals.', 'Support system access, assessment connectivity and online interviews.', 'Spot operational challenges and coordinate timely fixes.'] },
     { num: '07', bg: '#8CC63F', title: 'Stakeholder & process coordination', points: ['Link HR teams, placement leadership, faculty coordinators and student reps.', 'Share recruitment information with all stakeholders on time.', 'Support process compliance, documentation and activity tracking.', 'Improve placement operations through organised data and coordination.'] }
@@ -245,7 +309,7 @@ class Component extends DCLogic {
     { label: 'Operations', accent: '#C6F432', name: 'Placement & recruitment', items: 'Drive management · HR relations · Student coordination · Logistics', count: '04' },
     { label: 'Infrastructure', accent: '#FF5A4E', name: 'Networking', items: 'Computer networks · Troubleshooting · Routing & switching basics', count: '03' },
     { label: 'Tools', accent: '#3FB58A', name: 'Tools & support', items: 'CEIPAL ATS · MS Office · Ticketing systems', count: '03' },
-    { label: 'Reporting', accent: '#FFB627', name: 'Data &  ', items: 'Placement trackers · Reports · Dashboards', count: '03' },
+    { label: 'Reporting', accent: '#FFB627', name: 'Data & MIS', items: 'Placement trackers · Reports · Dashboards', count: '03' },
     { label: 'Interface', accent: '#F28C28', name: 'Web technologies', items: 'HTML · CSS', count: '02' },
     { label: 'Speech', accent: '#E9C46A', name: 'Languages', items: 'Tamil (native) · English (fluent)', count: '02' }
   ];
@@ -267,12 +331,58 @@ class Component extends DCLogic {
     { name: 'NCC Cadet', c: '#8CC63F', when: 'School' },
     { name: 'Active NSS Volunteer', c: '#FFB627', when: 'College' }
   ];
+  gallery = [
+    { dir: '01_Portraits', title: 'Portraits', c: '#C6F432', blurb: 'Profile and personal shots.', photos: [
+      ['01_Profile_Headshot', 'Profile headshot'], ['02_Formal_Portrait_Blazer', 'Formal portrait'], ['03_Portrait_VDart_Lounge', 'At the VDart office lounge'],
+      ['04_Portrait_Office_Corridor', 'Office corridor portrait'], ['05_Casual_Portrait', 'Casual portrait'], ['06_Mirror_Portrait', 'Mirror portrait']] },
+    { dir: '02_SRM_Campus_Placements', title: 'Campus placements at SRM', c: '#FF5A4E', blurb: 'Recruitment drives, pre-placement talks and student coordination at SRM Institute of Science and Technology, Tiruchirappalli.', photos: [
+      ['01_SRM_Trichy_Campus', 'At SRM Institute of Science and Technology, Tiruchirappalli'], ['02_Placement_Drive_Group_Photo', 'Recruitment drive group photo at SRM Trichy'],
+      ['03_Pre_Placement_Talk', 'Pre-placement talk with students'], ['04_Placement_Briefing_Auditorium', 'Placement briefing in the auditorium'],
+      ['05_Students_Auditorium_Session', 'Students at a placement session'], ['06_Recruiter_Session_Seminar_Hall', 'Recruiter session in the seminar hall'],
+      ['07_Online_Assessment_Computer_Lab', 'Online assessment in the computer lab'], ['08_Group_Activity_Outdoor', 'Outdoor group activity with students'],
+      ['09_Group_Discussion_Campus_Lawn', 'Student group round on the campus lawn'], ['10_Career_Development_Centre_Stall', 'Career Development Centre stall'],
+      ['11_CDC_Stall_Team', 'With the team at the CDC stall'], ['12_Team_Photo_Faculty', 'Team photo with faculty and staff']] },
+    { dir: '03_VDart_Resurgence', title: 'VDart & Resurgence', c: '#3FB58A', blurb: 'With the VDart team, including the Resurgence company event.', photos: [
+      ['01_Resurgence_Event_Team', 'VDart Resurgence event, team photo'], ['02_Resurgence_Event_Stage', 'At the Resurgence event stage'], ['03_Team_Selfie', 'Team selfie at Resurgence'],
+      ['04_With_Colleague', 'With a colleague at VDart'], ['05_Event_Audience', 'In the audience at Resurgence'], ['06_Event_Session', 'Team at a Resurgence session']] },
+    { dir: '04_Malaysia_Study_Tour', title: 'Malaysia immersion study tour', c: '#E9C46A', blurb: 'UCSI University visit (July 2024): 5G portal, network server room and a hands-on AI workshop, plus Kuala Lumpur.', photos: [
+      ['01_UCSI_College', 'UCSI College, Malaysia'], ['02_5G_Portal_Network_Plant', '5G portal, introducing the network plant'],
+      ['03_UCSI_Network_Server_Room', 'Network server room visit, UCSI University'], ['04_Server_Room_With_Host', 'Server room with the UCSI host'],
+      ['05_Certificate_Presentation', 'Receiving the workshop certificate'], ['06_Workshop_Certificates_Group', 'Workshop participants with certificates'],
+      ['07_UCSI_AI_Workshop_Certificate', 'Certificate: Data-driven Modelling with AI workshop, UCSI (Jul 2024)', 1],
+      ['08_Batu_Caves_Group', 'Batu Caves, Selangor'], ['09_Batu_Caves', 'Batu Caves, Selangor'],
+      ['10_Petronas_Towers', 'Petronas Twin Towers, Kuala Lumpur'], ['11_Petronas_Towers_Group', 'Petronas Twin Towers with the group']] },
+    { dir: '05_MCA_Department_Achievements', title: 'MCA department president & achievements', c: '#F28C28', blurb: 'Dhanalakshmi Srinivasan University: department leadership, awards, conferences and an industrial visit.', photos: [
+      ['01_Best_MCA_Student_Award', 'Best MCA Student Award, international hackathon'], ['02_MLA_Appreciation_Dept_President', 'Appreciation from the MLA for department coordination as President'],
+      ['03_Department_Activity_Intl_Conference', 'Department activity: international conference on AI'], ['04_iROHUB_Industrial_Visit_Kochi', 'Industrial visit to iROHUB Infotech, Kochi (Jun 2024)'],
+      ['05_iROHUB_Industrial_Visit_Letter', 'Letter: iROHUB Infotech industrial visit', 1], ['06_Hackathon_ICIAAIEA24_Paper_Certificate', "Certificate: paper presentation, ICIAAIEA '24 (hackathon)", 1],
+      ['07_MSET2025_Presentation_Certificate', 'Certificate: presenter, MSET 2025 international conference', 1]] },
+    { dir: '06_NSS_NCC', title: 'NSS & NCC', c: '#8CC63F', blurb: 'Best Volunteer Award, active NSS volunteering and NCC cadet certificates.', photos: [
+      ['01_NSS_Best_Volunteer_Award', 'NSS Best Volunteer Award ceremony'], ['02_NSS_Volunteer_Award_Certificate', 'Certificate: NSS Volunteer Award, Bishop Heber College', 1],
+      ['03_NSS_Govt_of_India_Certificate', 'Certificate: NSS volunteer 2019–2021, Govt of India', 1], ['04_Fit_India_Freedom_Run_Certificate', 'Certificate: Fit India Freedom Run 2.0', 1],
+      ['05_NSS_Camp_Group', 'NSS special camp'], ['06_NSS_Volunteers_Group', 'NSS volunteers'], ['07_Overall_Trophy', 'Overall trophy win'],
+      ['08_NCC_B_Certificate', "Certificate: NCC 'B' certificate", 1], ['09_NCC_Annual_Training_Camp_Certificate', 'Certificate: NCC Combined Annual Training Camp (2015)', 1]] },
+    { dir: '07_Internship_Course_Certificates', title: 'Internship & course certificates', c: '#FFB627', blurb: 'Internship completion and course certificates.', photos: [
+      ['01_VR_Della_Internship_Certificate', 'Certificate: Web development internship, VR Della IT Services (Aug 2024)', 1],
+      ['02_ILife_Academy_Web_Designing', 'Certificate: Web Designing, I-Life Academy (2022)', 1]] }
+  ].map((s, i) => ({ ...s, num: String(i + 1).padStart(2, '0'), photos: s.photos.map(([f, cap, doc]) => ({ src: `images/gallery/${s.dir}/${f}.jpg`, cap, fit: doc ? 'contain' : 'cover', sec: s.title })) }));
+  openGallery = () => { this.setState({ galOpen: true, lb: -1 }); document.body.style.overflow = 'hidden'; };
+  closeGallery = () => { this.setState({ galOpen: false, lb: -1 }); document.body.style.overflow = ''; };
+  galList() { const g = this.state.galSec; return g < 0 ? this.gallery : [this.gallery[g]]; }
+  lbStep(d) { const n = this.galList().reduce((a, s) => a + s.photos.length, 0); this.setState({ lb: (this.state.lb + d + n) % n }); }
 
   componentDidMount() {
     this.onScroll = () => { if (!this.raf) this.raf = requestAnimationFrame(() => { this.raf = 0; this.update(); }); };
     this.onResize = () => { const w = window.innerWidth >= 1000; if (w !== this.state.wide) this.setState({ wide: w }); this.onScroll(); };
     window.addEventListener('scroll', this.onScroll, { passive: true });
     window.addEventListener('resize', this.onResize);
+    this.onGalKey = (e) => {
+      if (!this.state.galOpen) return;
+      if (e.key === 'Escape') { if (this.state.lb >= 0) this.setState({ lb: -1 }); else this.closeGallery(); }
+      else if (this.state.lb >= 0 && e.key === 'ArrowRight') this.lbStep(1);
+      else if (this.state.lb >= 0 && e.key === 'ArrowLeft') this.lbStep(-1);
+    };
+    window.addEventListener('keydown', this.onGalKey);
     this.onResize(); this.update();
     this.layout(false);
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
@@ -290,6 +400,7 @@ class Component extends DCLogic {
   }
   componentWillUnmount() {
     window.removeEventListener('scroll', this.onScroll); window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('keydown', this.onGalKey); document.body.style.overflow = '';
     if (this.io) this.io.disconnect();
   }
   componentDidUpdate() { if (!this.drag && !this.busy) this.layout(false); }
@@ -358,7 +469,20 @@ class Component extends DCLogic {
 
   renderVals() {
     const n = this.jobs.length, top = this.state.top;
+    const { galSec, lb } = this.state;
+    let k = 0;
+    const galShown = this.galList().map(s => ({ ...s, count: s.photos.length, photos: s.photos.map(p => { const i = k++; return { ...p, open: () => this.setState({ lb: i }) }; }) }));
+    const flat = galShown.flatMap(s => s.photos), cur = flat[lb];
+    const tab = (label, idx, c, cnt) => ({ label, c, n: cnt, on: galSec === idx, pick: () => this.setState({ galSec: idx, lb: -1 }),
+      bg: galSec === idx ? '#1A1612' : 'transparent', fg: galSec === idx ? '#FBF6EC' : '#1A1612', border: galSec === idx ? '#1A1612' : 'rgba(26,22,18,.25)' });
+    const total = this.gallery.reduce((a, s) => a + s.photos.length, 0);
     return {
+      galOpen: this.state.galOpen, galShown, galTotal: total, galSecCount: this.gallery.length,
+      galTabs: [tab('All', -1, '#FF5A4E', total), ...this.gallery.map((s, i) => tab(s.title, i, s.c, s.photos.length))],
+      galPreview: [this.gallery[1].photos[1], this.gallery[3].photos[2], this.gallery[4].photos[0], this.gallery[5].photos[0]],
+      openGallery: this.openGallery, closeGallery: this.closeGallery,
+      lbOpen: !!cur, lbSrc: cur ? cur.src : '', lbCap: cur ? cur.cap : '', lbSec: cur ? cur.sec : '', lbCounter: cur ? `${lb + 1} / ${flat.length}` : '',
+      lbPrev: () => this.lbStep(-1), lbNext: () => this.lbStep(1), closeLb: () => this.setState({ lb: -1 }), stop: (e) => e.stopPropagation(),
       wide: this.state.wide,
       jobs: this.jobs, jobCols: this.state.wide ? 'minmax(0,140px) minmax(0,1fr) minmax(0,220px)' : 'minmax(0,1fr)', duties: this.duties, skills: this.skills, edu: this.edu, certs: this.certs, awards: this.awards,
       eduCols: this.state.wide ? 'minmax(0,.8fr) minmax(0,2fr) minmax(0,.9fr) minmax(0,.8fr)' : 'minmax(0,1fr) minmax(0,1fr)',
