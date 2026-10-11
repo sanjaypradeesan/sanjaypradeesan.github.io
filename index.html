@@ -145,7 +145,7 @@ a:hover{color:#E0402F}
     <div style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#6E6658">Count = items listed</div>
   </div>
   <div style="border-top:1px solid rgba(26,22,18,.13)">
-    <sc-for list="{{ skills }}" as="s" hint-placeholder-count="6">
+    <sc-for list="{{ skills }}" as="s" hint-placeholder-count="5">
       <div data-reveal="" style="display:flex;flex-wrap:wrap;align-items:baseline;gap:12px 32px;padding:26px 0;border-bottom:1px solid rgba(26,22,18,.13)">
         <span style="flex:0 0 150px;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:#5A5348">{{ s.label }}</span>
         <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:8px">
@@ -290,7 +290,7 @@ class Component extends DCLogic {
   top = 0; drag = null; busy = false;
 
   jobs = [
-    { num: '05', code: 'Current', bg: '#C6F432', dates: 'Present', role: 'Placement Operations & HR Relations', company: 'SRM Institute of Science and Technology', desc: 'End-to-end campus placement: planning recruitment drives, building HR and corporate relationships, guiding students, and owning placement data and reporting.', tags: 'Placements · HR relations · MIS' },
+    { num: '05', code: 'Current', bg: '#C6F432', dates: 'Present', role: 'Placement Operations & HR Relations', company: 'SRM Institute of Science and Technology', desc: 'End-to-end campus placement: planning recruitment drives, building HR and corporate relationships, guiding students, and owning placement data and reporting.', tags: 'Placements · HR relations · Reporting' },
     { num: '04', code: 'Full-time', bg: '#FF5A4E', dates: 'From Jun 2025', role: 'Delivery Team Associate', company: 'VDart Technologies Pvt Ltd', desc: 'CEIPAL ATS operations on the Tools Team: compliance and accuracy audits, credit allocation tracking and first-level troubleshooting with cross-functional teams.', tags: 'CEIPAL ATS · Audits · Support' },
     { num: '03', code: 'Internship', bg: '#3FB58A', dates: 'Aug 2024', role: 'Front-End Web Development Intern', company: 'VR Della IT Services', desc: 'Designed responsive pages with HTML, CSS and media queries; refined UI with advanced CSS while keeping cross-browser compatibility.', tags: 'HTML · CSS · Responsive' },
     { num: '02', code: 'Field', bg: '#FFB627', dates: 'Jul 2023 — Dec 2024', role: 'Jio Fiber Engineer', company: 'Reliance Jio Infocomm Ltd', desc: 'Installed, configured and maintained fibre connections for homes and businesses; diagnosed network faults to minimise downtime and worked with backend teams on service quality.', tags: 'Fibre · Diagnostics · Field service' },
@@ -300,7 +300,7 @@ class Component extends DCLogic {
     { num: '01', bg: '#C6F432', title: 'Placement operations & drive management', points: ['Coordinate and monitor end-to-end campus placement activities.', 'Plan, schedule and execute campus recruitment drives.', 'Manage recruitment schedules, student participation and drive logistics.', 'Coordinate with internal teams for smooth execution.'] },
     { num: '02', bg: '#FFB627', title: 'HR connectivity & corporate relations', points: ['Build and maintain relationships with HR representatives and corporate recruiters.', 'Connect with companies to explore campus recruitment opportunities.', 'Facilitate communication between recruiters and the institution.', 'Coordinate interview schedules, requirements and follow-ups with HR teams.'] },
     { num: '03', bg: '#F28C28', title: 'Student coordination & support', points: ['Answer student queries on drives, eligibility, assessments and interviews.', 'Communicate announcements, deadlines, instructions and schedules.', 'Monitor registrations, assessment completion, attendance and participation.', 'Guide students through the recruitment process.'] },
-    { num: '04', bg: '#3FB58A', title: 'Placement data & reporting', points: ['Maintain student databases, placement records, trackers and results.', 'Compile, validate and share placement data with stakeholders.', 'Prepare placement reports, MIS updates, dashboards and presentations.', 'Track recruitment progress, participation and outcomes.'] },
+    { num: '04', bg: '#3FB58A', title: 'Placement data & reporting', points: ['Maintain student databases, placement records, trackers and results.', 'Compile, validate and share placement data with stakeholders.', 'Prepare placement reports, dashboards and presentations.', 'Track recruitment progress, participation and outcomes.'] },
     { num: '05', bg: '#FF5A4E', title: 'Recruitment logistics & arrangements', points: ['Arrange venues, computer labs, equipment and other requirements.', 'Organise transportation and logistical support.', 'Host visiting recruiters and provide on-campus assistance.', 'Coordinate with faculty, student coordinators and admin teams.'] },
     { num: '06', bg: '#E9C46A', title: 'Technical support & issue resolution', points: ['Resolve technical issues with online assessments and recruitment portals.', 'Support system access, assessment connectivity and online interviews.', 'Spot operational challenges and coordinate timely fixes.'] },
     { num: '07', bg: '#8CC63F', title: 'Stakeholder & process coordination', points: ['Link HR teams, placement leadership, faculty coordinators and student reps.', 'Share recruitment information with all stakeholders on time.', 'Support process compliance, documentation and activity tracking.', 'Improve placement operations through organised data and coordination.'] }
@@ -309,8 +309,7 @@ class Component extends DCLogic {
     { label: 'Operations', accent: '#C6F432', name: 'Placement & recruitment', items: 'Drive management · HR relations · Student coordination · Logistics', count: '04' },
     { label: 'Infrastructure', accent: '#FF5A4E', name: 'Networking', items: 'Computer networks · Troubleshooting · Routing & switching basics', count: '03' },
     { label: 'Tools', accent: '#3FB58A', name: 'Tools & support', items: 'CEIPAL ATS · MS Office · Ticketing systems', count: '03' },
-    { label: 'Reporting', accent: '#FFB627', name: 'Data & MIS', items: 'Placement trackers · Reports · Dashboards', count: '03' },
-    { label: 'Interface', accent: '#F28C28', name: 'Web technologies', items: 'HTML · CSS', count: '02' },
+    { label: 'Reporting', accent: '#FFB627', name: 'Data & Management', items: 'Placement trackers · Reports · Dashboards', count: '03' },
     { label: 'Speech', accent: '#E9C46A', name: 'Languages', items: 'Tamil (native) · English (fluent)', count: '02' }
   ];
   edu = [
