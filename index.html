@@ -330,17 +330,18 @@ class Component extends DCLogic {
     { name: 'NCC Cadet', c: '#8CC63F', when: 'School' },
     { name: 'Active NSS Volunteer', c: '#FFB627', when: 'College' }
   ];
-  gallery = [
-    { dir: '01_Portraits', title: 'Portraits', c: '#C6F432', blurb: 'Profile and personal shots.', photos: [
-      ['01_Profile_Headshot', 'Profile headshot'], ['02_Formal_Portrait_Blazer', 'Formal portrait'], ['03_Portrait_VDart_Lounge', 'At the VDart office lounge'],
-      ['04_Portrait_Office_Corridor', 'Office corridor portrait'], ['05_Casual_Portrait', 'Casual portrait'], ['06_Mirror_Portrait', 'Mirror portrait']] },
+  gallery = (secs => {
+    secs = secs.map(s => ({ ...s, photos: s.photos.map(([f, cap, doc]) => ({ src: `images/gallery/${s.dir}/${f}.jpg`, cap, doc: !!doc })) }));
+    const certs = { title: 'Certificates', c: '#C6F432', blurb: 'Every certificate in one place. Each one also appears in its own section below.', photos: secs.flatMap(s => s.photos.filter(p => p.doc)) };
+    return [certs, ...secs].map((s, i) => ({ ...s, num: String(i + 1).padStart(2, '0'), photos: s.photos.map(p => ({ ...p, fit: p.doc ? 'contain' : 'cover', sec: s.title })) }));
+  })([
     { dir: '02_SRM_Campus_Placements', title: 'Campus placements at SRM', c: '#FF5A4E', blurb: 'Recruitment drives, pre-placement talks and student coordination at SRM Institute of Science and Technology, Tiruchirappalli.', photos: [
       ['01_SRM_Trichy_Campus', 'At SRM Institute of Science and Technology, Tiruchirappalli'], ['02_Placement_Drive_Group_Photo', 'Recruitment drive group photo at SRM Trichy'],
       ['03_Pre_Placement_Talk', 'Pre-placement talk with students'], ['04_Placement_Briefing_Auditorium', 'Placement briefing in the auditorium'],
       ['05_Students_Auditorium_Session', 'Students at a placement session'], ['06_Recruiter_Session_Seminar_Hall', 'Recruiter session in the seminar hall'],
       ['07_Online_Assessment_Computer_Lab', 'Online assessment in the computer lab'], ['08_Group_Activity_Outdoor', 'Outdoor group activity with students'],
-      ['09_Group_Discussion_Campus_Lawn', 'Student group round on the campus lawn'], ['10_Career_Development_Centre_Stall', 'Career Development Centre stall'],
-      ['11_CDC_Stall_Team', 'With the team at the CDC stall'], ['12_Team_Photo_Faculty', 'Team photo with faculty and staff']] },
+      ['09_Group_Discussion_Campus_Lawn', 'Student group round on the campus lawn'], ['10_Career_Centre_Stall', 'Career Centre stall'],
+      ['11_Career_Centre_Stall_Team', 'With the team at the Career Centre stall'], ['12_Team_Photo_Faculty', 'Team photo with faculty and staff']] },
     { dir: '03_VDart_Resurgence', title: 'VDart & Resurgence', c: '#3FB58A', blurb: 'With the VDart team, including the Resurgence company event.', photos: [
       ['01_Resurgence_Event_Team', 'VDart Resurgence event, team photo'], ['02_Resurgence_Event_Stage', 'At the Resurgence event stage'], ['03_Team_Selfie', 'Team selfie at Resurgence'],
       ['04_With_Colleague', 'With a colleague at VDart'], ['05_Event_Audience', 'In the audience at Resurgence'], ['06_Event_Session', 'Team at a Resurgence session']] },
@@ -364,7 +365,7 @@ class Component extends DCLogic {
     { dir: '07_Internship_Course_Certificates', title: 'Internship & course certificates', c: '#FFB627', blurb: 'Internship completion and course certificates.', photos: [
       ['01_VR_Della_Internship_Certificate', 'Certificate: Web development internship, VR Della IT Services (Aug 2024)', 1],
       ['02_ILife_Academy_Web_Designing', 'Certificate: Web Designing, I-Life Academy (2022)', 1]] }
-  ].map((s, i) => ({ ...s, num: String(i + 1).padStart(2, '0'), photos: s.photos.map(([f, cap, doc]) => ({ src: `images/gallery/${s.dir}/${f}.jpg`, cap, fit: doc ? 'contain' : 'cover', sec: s.title })) }));
+  ]);
   openGallery = () => { this.setState({ galOpen: true, lb: -1 }); document.body.style.overflow = 'hidden'; };
   closeGallery = () => { this.setState({ galOpen: false, lb: -1 }); document.body.style.overflow = ''; };
   galList() { const g = this.state.galSec; return g < 0 ? this.gallery : [this.gallery[g]]; }
@@ -474,7 +475,7 @@ class Component extends DCLogic {
     const flat = galShown.flatMap(s => s.photos), cur = flat[lb];
     const tab = (label, idx, c, cnt) => ({ label, c, n: cnt, on: galSec === idx, pick: () => this.setState({ galSec: idx, lb: -1 }),
       bg: galSec === idx ? '#1A1612' : 'transparent', fg: galSec === idx ? '#FBF6EC' : '#1A1612', border: galSec === idx ? '#1A1612' : 'rgba(26,22,18,.25)' });
-    const total = this.gallery.reduce((a, s) => a + s.photos.length, 0);
+    const total = new Set(this.gallery.flatMap(s => s.photos.map(p => p.src))).size;
     return {
       galOpen: this.state.galOpen, galShown, galTotal: total, galSecCount: this.gallery.length,
       galTabs: [tab('All', -1, '#FF5A4E', total), ...this.gallery.map((s, i) => tab(s.title, i, s.c, s.photos.length))],
